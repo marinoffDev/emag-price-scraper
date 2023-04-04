@@ -1,0 +1,1 @@
+# emag-price-scraper
