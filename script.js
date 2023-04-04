@@ -40,6 +40,7 @@ async function scrapeData() {
         console.log(`Scraping data for ${PRODUCT_ID.length} products.`);
         for (let i = 0; i < PRODUCT_TITLE.length; i++) {
             const TITLE_VALUE = await PRODUCT_TITLE[i].evaluate(el => el.textContent.trim())
+            const LINK_TO_PRODUCT_VALUE = await PRODUCT_TITLE[i].evaluate(el => el.href.replace(('?ref=fav_shared-list_pd-title'), ''))
             const PRICE_VALUE = await PRODUCT_PRICE[i].evaluate(el => el.textContent.trim().split(','))
             const PRODUCT_ID_VALUE = await PRODUCT_ID[i].evaluate(el => el.getAttribute('data-product-id'));
             const PRODUCT_THUMBNAILS_VALUE = await PRODUCT_THUMBNAILS[i].evaluate(el => el.getAttribute('src'));
@@ -49,7 +50,8 @@ async function scrapeData() {
                 $set: {
                     'productId': PRODUCT_ID_VALUE,
                     'title': TITLE_VALUE,
-                    'thumbnailUrl': PRODUCT_THUMBNAILS_VALUE
+                    'thumbnailUrl': PRODUCT_THUMBNAILS_VALUE,
+                    'storePageUrl': LINK_TO_PRODUCT_VALUE,
                 },
                 $push : {
                     'historicalData' : {
